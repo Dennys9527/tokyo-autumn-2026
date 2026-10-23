@@ -161,7 +161,7 @@ function setCurrentChapter(id){
  if(picker && [...picker.querySelectorAll('option')].some(option=>option.value==='#'+id)) picker.value='#'+id;
 }
 if('IntersectionObserver' in window){
- const observer = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)setCurrentChapter(entry.target.id);});},{rootMargin:'-110px 0px -55% 0px',threshold:0});
+ const observer = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)setCurrentChapter(window.scrollY<100?'daily':entry.target.id);});},{rootMargin:'-110px 0px -55% 0px',threshold:0});
  document.querySelectorAll('main > section[id]').forEach(section=>observer.observe(section));
 }
 
@@ -180,4 +180,5 @@ const chapterJump=document.getElementById('chapter-jump');
 const initialChapterHash=window.location?.hash;
 if(initialChapterHash && [...chapterJump.querySelectorAll('option')].some(option=>option.value===initialChapterHash)) setCurrentChapter(initialChapterHash.slice(1));
 chapterJump.addEventListener('change',()=>{if(chapterJump.value.startsWith('#') && document.getElementById(chapterJump.value.slice(1))) window.location.hash=chapterJump.value;});
+window.addEventListener('hashchange',()=>{if(window.location.hash==='#top')setCurrentChapter('daily');});
 </script></body></html>
